@@ -29,5 +29,5 @@ RUN make \
 WORKDIR /
 RUN rm -rf /tippecanoe
 
-COPY entrypoint.sh entrypoint.sh
-ENTRYPOINT entrypoint.sh
+COPY entrypoint.sh /
+ENTRYPOINT ["/entrypoint.sh"]
