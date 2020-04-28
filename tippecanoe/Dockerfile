@@ -26,7 +26,7 @@ RUN make \
   && make test
 
 # Remove source code post install
-WORKDIR /
+WORKDIR /data/
 RUN rm -rf /tippecanoe
 
 COPY entrypoint.sh /
