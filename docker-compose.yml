@@ -14,22 +14,33 @@ services:
 
   recorder:
     build: recorder/
-    networks:
-      - backend
-    restart: on-failure
-
-  tileserver:
-    build: tileserver/
+    volumes:
+      - ./data:/data
     networks:
       - backend
     restart: on-failure
 
   tippecanoe:
     build: tippecanoe/
-    deploy:
-      restart_policy:
-        condition: any
-        delay: 24h
+    volumes:
+      - ./data:/data
+    depends_on:
+      - tileserver
+
+  tileserver:
+    build: tileserver/
+    volumes:
+      - ./data:/app/data
+    networks:
+      - backend
+    restart: on-failure
+
+
+    # TODO: Figure out how to run this periodically
+    # deploy:
+    #   restart_policy:
+    #     condition: any
+    #     delay: 24h
 
 networks:
   backend:
