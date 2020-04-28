@@ -1,0 +1,1 @@
+FROM maptiler/tileserver-gl

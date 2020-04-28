@@ -1,0 +1,11 @@
+{
+  "name": "recorder",
+  "version": "0.0.1",
+  "description": "Application for recording Owntrack locations",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Doug Barrett",
+  "license": "ISC"
+}
