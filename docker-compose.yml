@@ -1,0 +1,37 @@
+# docker run -v ${PWD}/data/:/data/ tp
+version: "3.8"
+
+services:
+
+  frontend:
+    build: frontend/
+    ports:
+      - "80"
+    networks:
+      - backend
+      - proxy
+    restart: on-failure
+
+  recorder:
+    build: recorder/
+    networks:
+      - backend
+    restart: on-failure
+
+  tileserver:
+    build: tileserver/
+    networks:
+      - backend
+    restart: on-failure
+
+  tippecanoe:
+    build: tippecanoe/
+    deploy:
+      restart_policy:
+        condition: any
+        delay: 24h
+
+networks:
+  backend:
+  proxy:
+    external: true

@@ -1,22 +1,14 @@
 {
   "options": {
     "paths": {
-      "mbtiles": "data",
+      "root": "data",
+      "mbtiles": "",
       "styles": "styles"
     },
-    "frontpage": false
-  },
-  "styles": {
-    "heatmap": {
-      "style": "basic.json",
-      "tilejson": {
-        "type": "overlay",
-        "bounds": [8.44806, 47.32023, 8.62537, 47.43468]
-      }
-    }
+    "frontpage": true
   },
   "data": {
-    "zurich-vector": {
+    "track": {
       "mbtiles": "locations.mbtiles"
     }
   }
