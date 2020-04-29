@@ -6,7 +6,7 @@ services:
   frontend:
     build: frontend/
     ports:
-      - "80"
+      - 80:80
     networks:
       - backend
       - proxy
@@ -20,27 +20,13 @@ services:
       - backend
     restart: on-failure
 
-  tippecanoe:
-    build: tippecanoe/
+  tilecanoe:
+    build: tilecanoe/
     volumes:
       - ./data:/data
-    depends_on:
-      - tileserver
-
-  tileserver:
-    build: tileserver/
-    volumes:
-      - ./data:/app/data
     networks:
       - backend
     restart: on-failure
-
-
-    # TODO: Figure out how to run this periodically
-    # deploy:
-    #   restart_policy:
-    #     condition: any
-    #     delay: 24h
 
 networks:
   backend:

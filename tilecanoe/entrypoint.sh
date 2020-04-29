@@ -2,7 +2,7 @@
 set -e
 PID=-1
 
-# Colour logs before printing to stout
+# Colour logs before printing to stdout
 log () {
   while read data;
   do
