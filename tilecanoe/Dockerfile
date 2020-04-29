@@ -21,4 +21,4 @@ RUN rm -rf /tippecanoe
 COPY config.json /app/
 
 COPY entrypoint.sh /usr/local/bin/
-ENTRYPOINT ["entrypoint.sh"]
+ENTRYPOINT ["bash", "entrypoint.sh"]
