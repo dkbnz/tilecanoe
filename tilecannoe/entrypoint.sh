@@ -5,7 +5,7 @@ PID=-1
 
 update_tiles () {
   currentChecksum=$(sha1sum /data/locations.csv | tr -d '[:space:]')
-  previousChecksum=$(head -n 1 /data/metadata | tr -d '[:space:]')
+  previousChecksum=$(head -n 1 /app/metadata | tr -d '[:space:]')
 
   if [ "$currentChecksum" != "$previousChecksum" ]; then
     echo -e "current='${currentChecksum}'"
@@ -17,11 +17,11 @@ update_tiles () {
       kill -15 $PID
     fi
     # Recalculate tiles
-    tippecanoe -zg -f -o /data/locations.mbtiles --cluster-distance=10 /data/locations.csv
+    tippecanoe -zg -f -o /app/locations.mbtiles --cluster-distance=10 /data/locations.csv
     # Write current hash to metadata file
-    echo "$currentChecksum" > /data/metadata
+    echo "$currentChecksum" > /app/metadata
     echo "Starting tileserver"
-    /bin/bash /usr/src/app/run.sh --config /data/config.json &
+    /bin/bash /usr/src/app/run.sh --config /app/config.json &
     PID=$!
   else
     echo "No new locations."
@@ -32,6 +32,8 @@ update_tiles () {
     fi
   fi
 }
+
+touch /app/metadata
 
 while :
 do

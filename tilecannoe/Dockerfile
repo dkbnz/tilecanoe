@@ -15,10 +15,10 @@ RUN make \
   && make test
 
 # Remove source code post install
-WORKDIR /data
+WORKDIR /app
 RUN rm -rf /tippecanoe
 
-COPY config.json /data/
+COPY config.json /app/
 
 COPY entrypoint.sh /usr/local/bin/
 ENTRYPOINT ["entrypoint.sh"]
