@@ -2,8 +2,7 @@
   "options": {
     "paths": {
       "root": "data",
-      "mbtiles": "",
-      "styles": "styles"
+      "mbtiles": ""
     },
     "frontpage": true
   },

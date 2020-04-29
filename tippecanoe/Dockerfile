@@ -18,7 +18,7 @@ RUN apk update \
 
 # Clone tippecanoe
 RUN git clone https://github.com/mapbox/tippecanoe.git
-WORKDIR /tippecanoe/
+WORKDIR /tippecanoe
 
 # Build, install & test tippecanoe
 RUN make \
@@ -26,8 +26,11 @@ RUN make \
   && make test
 
 # Remove source code post install
-WORKDIR /data/
-RUN rm -rf /tippecanoe
+WORKDIR /data
+RUN rm -rf /tippecanoe && \
+    touch /app/metadata
 
 COPY entrypoint.sh /
 ENTRYPOINT ["/entrypoint.sh"]
+
+CMD ["node"]
