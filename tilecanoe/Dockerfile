@@ -19,6 +19,7 @@ WORKDIR /app
 RUN rm -rf /tippecanoe
 
 COPY config.json /app/
+COPY heatmap.json /app/styles/
 
 COPY entrypoint.sh /usr/local/bin/
 ENTRYPOINT ["bash", "entrypoint.sh"]

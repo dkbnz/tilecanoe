@@ -24,7 +24,7 @@ update_tiles () {
       kill -15 $PID
     fi
     # Recalculate tiles
-    tippecanoe -zg -f -o /app/locations.mbtiles --cluster-distance=10 /data/locations.csv | log '0;32' 'tippecanoe'
+    tippecanoe -zg -f -o /app/locations.mbtiles --cluster-distance=20 /data/locations.csv | log '0;32' 'tippecanoe'
     # Write current hash to metadata file
     echo "$currentChecksum" > /app/metadata
     echo "Starting tileserver" | log '0;32' 'tippecanoe'

@@ -2,9 +2,20 @@
   "options": {
     "paths": {
       "root": "",
-      "mbtiles": ""
+      "mbtiles": "",
+      "styles": "styles"
     },
     "frontpage": true
+  },
+  "styles": {
+    "heatmap": {
+      "style": "heatmap.json",
+      "serve_rendered": true,
+      "serve_data": false,
+      "tilejson": {
+        "type": "overlay"
+      }
+    }
   },
   "data": {
     "track": {
