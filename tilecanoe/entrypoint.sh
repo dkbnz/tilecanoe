@@ -15,7 +15,7 @@ update_metadata () {
   last_recorded=$(date -r /data/locations.csv +'%s') # Get date locations.csv was modified
   map_generated=$(date +'%s') # Get current date (time map generated)
   num_points=$(wc -l /data/locations.csv | awk '{ print $1-1 }') # Count total points in file
-  printf '{"lastRecorded":"%s","mapGenerated":"%s","points":"%s"}\n' \
+  printf '{"lastRecorded":"%s","generatedAgo":"%s","points":"%s"}\n' \
   "$last_recorded" "$map_generated" "$num_points" > /usr/src/app/public/resources/metadata.json
 }
 
