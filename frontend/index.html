@@ -19,16 +19,31 @@
       bottom: 0;
       width: 100%;
     }
+
+    #info {
+      color: #ccc;
+      width: 1px;
+      height: 1px;
+      padding: 0px 15px;
+      position: fixed;
+      left: 0;
+      top: 0;
+    }
   </style>
 </head>
 
 <body>
   <div id='map'></div>
+  <div id='info'>
+    <pre><b>Last Recorded</b><div id="last"><i>Loading...</i></div></pre>
+    <pre><b>Generated</b><div id="generated"><i>Loading...</i></div></pre>
+    <pre><b>Points</b><div id="num"><i>Loading...</i></div></pre>
+  </div>
   <script>
     mapboxgl.accessToken = 'pk.eyJ1IjoiZGtiYXJyZXR0IiwiYSI6ImNrOWYxbmx1MTA2aDQzbHA0djEwMGN2b3kifQ.U_D4ZYeLH7lK6h5mlxI6Bg';
     var map = new mapboxgl.Map({
       container: 'map',
-      style: 'mapbox://styles/mapbox/dark-v10',
+      style: 'mapbox://styles/dkbarrett/ck9qgaf3l36oh1iomd16b7m5d',
       center: [-90.4329477, 16.5873136],
       minZoom: 0,
       maxZoom: 9,
@@ -44,7 +59,8 @@
         'id': 'locations-heat',
         'type': 'raster',
         'source': 'locations',
-      })
+      });
+      map.addControl(new mapboxgl.NavigationControl());
     });
   </script>
 </body>

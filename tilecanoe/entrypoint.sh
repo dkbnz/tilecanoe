@@ -10,14 +10,23 @@ log () {
   done;
 }
 
+# Update data shown in top left of map
+update_metadata () {
+  last_recorded=$(date -r /data/locations.csv +'%s') # Get date locations.csv was modified
+  map_generated=$(date +'%s') # Get current date (time map generated)
+  num_points=$(wc -l /data/locations.csv | awk '{ print $1-1 }') # Count total points in file
+  printf '{"lastRecorded":"%s","mapGenerated":"%s","points":"%s"}\n' \
+  "$last_recorded" "$map_generated" "$num_points" > /usr/src/app/public/resources/metadata.json
+}
+
 # Check if locations.csv has changed
 # If so, stop server, recalculate tiles then restart server.
 update_tiles () {
   touch /app/metadata
-  previousChecksum=$(head -n 1 /app/metadata | tr -d '[:space:]')
-  currentChecksum=$(sha1sum /data/locations.csv | tr -d '[:space:]')
+  previous_checksum=$(head -n 1 /app/metadata | tr -d '[:space:]')
+  current_checksum=$(sha1sum /data/locations.csv | tr -d '[:space:]')
 
-  if [ "$currentChecksum" != "$previousChecksum" ]; then
+  if [ "$current_checksum" != "$previous_checksum" ]; then
     echo "[$(date +"%Y-%m-%dT%H:%M:%SZ")] Locations changed, updating tiles." | log '0;32' 'tippecanoe'
     if [ $PID != -1 ]; then
       echo "Stopping tileserver" | log '0;32' 'tippecanoe'
@@ -26,8 +35,9 @@ update_tiles () {
     # Recalculate tiles
     tippecanoe -zg -f -o /app/locations.mbtiles /data/locations.csv | log '0;32' 'tippecanoe'
     # Write current hash to metadata file
-    echo "$currentChecksum" > /app/metadata
+    echo "$current_checksum" > /app/metadata
     echo "Starting tileserver" | log '0;32' 'tippecanoe'
+    update_metadata
     /bin/bash /usr/src/app/run.sh --config /app/config.json | log '0;33' 'tileserver' &
     PID=$(jobs -p) # Capture PID to kill later
   else
