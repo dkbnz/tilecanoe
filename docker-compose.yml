@@ -2,12 +2,34 @@ version: "3.8"
 
 services:
 
-  tilecanoe:
-    build: src/
-    environment:
-      LOCATIONS_URL: <GEOJSON ENDPOINT>
+  owntracks_map:
+    build: ./frontend
     ports:
       - "80:80"
+    networks:
+      - backend
+      - proxy
+    restart: on-failure
+
+  recorder:
+    build: ./recorder
+    networks:
+      - backend
     volumes:
       - ./data:/data
     restart: on-failure
+
+  tilecanoe:
+    build: ./tilecanoe
+    networks:
+      - backend
+    environment:
+      LOCATIONS_URL: <GEOJSON ENDPOINT>
+    volumes:
+      - ./data:/data
+    restart: on-failure
+
+networks:
+  backend:
+  proxy:
+    external: true
