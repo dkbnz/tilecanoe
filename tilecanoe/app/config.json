@@ -5,7 +5,10 @@
       "mbtiles": "",
       "styles": "styles"
     },
-    "frontpage": true
+    "serveAllFonts": false,
+    "serveAllStyles": false,
+    "serveStaticMaps": false,
+    "frontPage": "index.html"
   },
   "styles": {
     "heatmap": {

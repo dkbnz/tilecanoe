@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset='utf-8' />
+  <title>Where I've Been</title>
+  <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+  <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.9.1/mapbox-gl.js'></script>
+  <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.9.1/mapbox-gl.css' rel='stylesheet' />
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+    }
+
+    #map {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 100%;
+    }
+
+    #info {
+      color: #ccc;
+      width: 1px;
+      height: 1px;
+      padding: 0px 15px;
+      position: fixed;
+      left: 0;
+      top: 0;
+    }
+  </style>
+</head>
+
+<body>
+  <div id='map'></div>
+  <div id='info'>
+    <pre><b>Generated</b><div id="generated"><i>Loading...</i></div></pre>
+    <pre><b>Points</b><div id="num_points"><i>Loading...</i></div></pre>
+  </div>
+  <script>
+    mapboxgl.accessToken = 'pk.eyJ1IjoiZGtiYXJyZXR0IiwiYSI6ImNrOWYxbmx1MTA2aDQzbHA0djEwMGN2b3kifQ.U_D4ZYeLH7lK6h5mlxI6Bg';
+    var map = new mapboxgl.Map({
+      container: 'map',
+      style: 'mapbox://styles/dkbarrett/ck9qgaf3l36oh1iomd16b7m5d',
+      center: [-90.4329477, 16.5873136],
+      minZoom: 0,
+      maxZoom: 9,
+      zoom: 2
+    });
+
+
+    function loadMetadata() {
+      fetch('/metadata.json')
+        .then(function(response) {
+          return response.json();
+        })
+        .then(function(jsonResponse) {
+          now = new Date().getTime();
+          lastRecorded = (((now / 1000) - jsonResponse.lastRecorded) / (60 * 60 * 24)).toFixed(0);
+          generatedAgo = (((now / 1000) - jsonResponse.generatedAgo) / (60 * 60)).toFixed(0);
+
+          document.getElementById("generated").innerHTML = (generatedAgo > 1 ? generatedAgo + " days" : "1 day") + " ago";
+          document.getElementById("num_points").innerHTML = jsonResponse.points;
+          // do something with jsonResponse
+        });
+    }
+
+
+    map.on('load', function() {
+      map.addSource('locations', {
+        'type': 'raster',
+        'url': '/styles/heatmap.json'
+      });
+      map.addLayer({
+        'id': 'locations-heat',
+        'type': 'raster',
+        'source': 'locations',
+      });
+      map.addControl(new mapboxgl.NavigationControl());
+      loadMetadata();
+    });
+  </script>
+</body>
+
+</html>

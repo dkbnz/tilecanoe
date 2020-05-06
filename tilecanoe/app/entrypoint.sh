@@ -12,9 +12,8 @@ log () {
 
 # Update data shown in top left of map
 update_metadata () {
-  last_recorded=$(date -r /data/locations.csv +'%s') # Get date locations.csv was modified
   map_generated=$(date +'%s') # Get current date (time map generated)
-  num_points=$(wc -l /data/locations.csv | awk '{ print $1-1 }') # Count total points in file
+  num_points=$(grep -o "Point" /app/locations.json | wc -l) # Count total points in file
   printf '{"lastRecorded":"%s","generatedAgo":"%s","points":"%s"}\n' \
   "$last_recorded" "$map_generated" "$num_points" > /usr/src/app/public/resources/metadata.json
 }
@@ -23,23 +22,30 @@ update_metadata () {
 # If so, stop server, recalculate tiles then restart server.
 update_tiles () {
   touch /app/metadata
+  curl -o /app/locations.json $LOCATIONS_URL
   previous_checksum=$(head -n 1 /app/metadata | tr -d '[:space:]')
-  current_checksum=$(sha1sum /data/locations.csv | tr -d '[:space:]')
+  current_checksum=$(sha1sum /app/locations.csv | tr -d '[:space:]')
 
   if [ "$current_checksum" != "$previous_checksum" ]; then
     echo "[$(date +"%Y-%m-%dT%H:%M:%SZ")] Locations changed, updating tiles." | log '0;32' 'tippecanoe'
+
+    # Recalculate tiles
+    tippecanoe -zg -f -o /app/locations_temp.mbtiles /app/locations.csv | log '0;32' 'tippecanoe'
+
     if [ $PID != -1 ]; then
       echo "Stopping tileserver" | log '0;32' 'tippecanoe'
       kill -15 $PID
     fi
-    # Recalculate tiles
-    tippecanoe -zg -f -o /app/locations.mbtiles /data/locations.csv | log '0;32' 'tippecanoe'
-    # Write current hash to metadata file
-    echo "$current_checksum" > /app/metadata
+
+    mv -f /app/locations_temp.mbtiles /app/locations.mbtiles
+
     echo "Starting tileserver" | log '0;32' 'tippecanoe'
-    update_metadata
     /bin/bash /usr/src/app/run.sh --config /app/config.json | log '0;33' 'tileserver' &
     PID=$(jobs -p) # Capture PID to kill later
+
+    update_metadata
+    # Write current hash to metadata file
+    echo "$current_checksum" > /app/metadata
   else
     echo "[$(date +"%Y-%m-%dT%H:%M:%SZ")] No new locations." | log '0;32' 'tippecanoe'
     if [ $PID = -1 ]; then
@@ -53,5 +59,5 @@ update_tiles () {
 while :
 do
   update_tiles
-  sleep 3600 # Wait an hour before checking for new locations.
+  sleep 30 # Wait an hour before checking for new locations.
 done

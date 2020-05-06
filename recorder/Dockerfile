@@ -1,18 +1,12 @@
-FROM node:12
+FROM tiangolo/uwsgi-nginx-flask:python3.6-alpine3.7
 
-# Create app directory
-WORKDIR /app
+RUN apk --update add bash nano
 
-# Install app dependencies
-# Ensure both package.json AND package-lock.json are copied
-COPY ./app/package*.json ./
+ENV STATIC_URL /static
+ENV STATIC_PATH /var/www/app/static
 
-# Installation of dependencies is done before application
-# To make use of docker's layering
-RUN npm install
+COPY ./requirements.txt /var/www/requirements.txt
 
-# Bundle app source
-COPY ./app/ .
+RUN pip install -r /var/www/requirements.txt
 
-EXPOSE 8080
-CMD [ "node", "index.js" ]
+COPY . /app

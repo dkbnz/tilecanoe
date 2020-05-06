@@ -1,34 +1,13 @@
-# docker run -v ${PWD}/data/:/data/ tp
 version: "3.8"
 
 services:
 
-  frontend:
-    build: frontend/
-    ports:
-      - 80:80
-    networks:
-      - backend
-      - proxy
-    restart: on-failure
-
-  recorder:
-    build: recorder/
-    volumes:
-      - ./data:/data
-    networks:
-      - backend
-    restart: on-failure
-
   tilecanoe:
-    build: tilecanoe/
+    build: src/
+    environment:
+      LOCATIONS_URL: <GEOJSON ENDPOINT>
+    ports:
+      - "80:80"
     volumes:
       - ./data:/data
-    networks:
-      - backend
     restart: on-failure
-
-networks:
-  backend:
-  proxy:
-    external: true

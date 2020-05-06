@@ -1,25 +1,17 @@
-FROM maptiler/tileserver-gl
+FROM debian:buster-slim as builder
 
-# Update repos and install dependencies
+WORKDIR /build
+
+# Update repos, install dependencies and build tippecanoe
 RUN apt-get update \
   && apt-get -y upgrade \
-  && apt-get -y install build-essential libsqlite3-dev zlib1g-dev
+  && apt-get -y install build-essential libsqlite3-dev zlib1g-dev git \
+  && git clone https://github.com/mapbox/tippecanoe.git . \
+  && make tippecanoe
 
-# Clone tippecanoe
-WORKDIR /tippecanoe
-RUN git clone https://github.com/mapbox/tippecanoe.git .
+FROM maptiler/tileserver-gl
 
-# Build, install & test tippecanoe
-RUN make \
-  && make install \
-  && make test
+COPY --from=builder /build/tippecanoe /usr/local/bin/
+COPY /app/ /app/
 
-# Remove source code post install
-WORKDIR /app
-RUN rm -rf /tippecanoe
-
-COPY config.json /app/
-COPY heatmap.json /app/styles/
-
-COPY entrypoint.sh /usr/local/bin/
-ENTRYPOINT ["bash", "entrypoint.sh"]
+ENTRYPOINT ["bash", "/app/entrypoint.sh"]
