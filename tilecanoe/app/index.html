@@ -35,7 +35,7 @@
 <body>
   <div id='map'></div>
   <div id='info'>
-    <pre><b>Generated</b><div id="generated"><i>Loading...</i></div></pre>
+    <pre><b>Updated</b><div id="generated"><i>Loading...</i></div></pre>
     <pre><b>Points</b><div id="num_points"><i>Loading...</i></div></pre>
   </div>
   <script>
@@ -57,12 +57,11 @@
         })
         .then(function(jsonResponse) {
           now = new Date().getTime();
-          lastRecorded = (((now / 1000) - jsonResponse.lastRecorded) / (60 * 60 * 24)).toFixed(0);
           generatedAgo = (((now / 1000) - jsonResponse.generatedAgo) / (60 * 60)).toFixed(0);
+          timePassed = ["<1 hour", "1 hour", generatedAgo + " hours"][(generatedAgo >= 1) + (generatedAgo > 1)]
 
-          document.getElementById("generated").innerHTML = (generatedAgo > 1 ? generatedAgo + " days" : "1 day") + " ago";
+          document.getElementById("generated").innerHTML = timePassed + " ago";
           document.getElementById("num_points").innerHTML = jsonResponse.points;
-          // do something with jsonResponse
         });
     }
 

@@ -34,6 +34,7 @@ update_tiles () {
     if [ $PID != -1 ]; then
       echo "Stopping tileserver" | log '0;32' 'tippecanoe'
       kill -15 $PID
+      wait $PID
     fi
 
     mv -f /app/locations_temp.mbtiles /app/locations.mbtiles
