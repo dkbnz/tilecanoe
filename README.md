@@ -3,6 +3,16 @@ Application stack for recording and displaying locations using owntracks, tilese
 
 ![Flow of data](docs/dataflow.png)
 
+### Usage
+
+```bash
+git clone https://github.com/dkbarrett/tilecanoe.git
+cd tilecanoe
+echo -e "lat,lon\n" > ./data/locations.csv
+htpasswd -c ./frontend/.htpasswd <OWNTRACKS USERNAME>
+docker-compose up -d
+```
+
 ### [Tippecanoe](https://github.com/maptiler/tileserver-gl)
 >"Build vector tilesets from large collections of GeoJSON features."
 ### [TileServer-GL](https://github.com/maptiler/tileserver-gl)
