@@ -9,7 +9,7 @@ services:
       - "80:80"
     networks:
       - backend
-      - proxy
+      - reverse-proxy
     restart: on-failure
 
   recorder:
@@ -32,5 +32,5 @@ services:
 
 networks:
   backend:
-  proxy:
+  reverse-proxy:
     external: true
