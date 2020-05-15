@@ -2,7 +2,8 @@ version: "3.8"
 
 services:
 
-  owntracks_map:
+  frontend:
+    container_name: frontend
     build: ./frontend
     ports:
       - "80:80"
@@ -12,6 +13,7 @@ services:
     restart: on-failure
 
   recorder:
+    container_name: recorder
     build: ./recorder
     networks:
       - backend
@@ -20,11 +22,10 @@ services:
     restart: on-failure
 
   tilecanoe:
+    container_name: tilecanoe
     build: ./tilecanoe
     networks:
       - backend
-    environment:
-      LOCATIONS_URL: <GEOJSON ENDPOINT>
     volumes:
       - ./data:/data
     restart: on-failure

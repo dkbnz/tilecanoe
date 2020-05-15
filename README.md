@@ -8,6 +8,7 @@ Application stack for recording and displaying locations using owntracks, tilese
 ```bash
 git clone https://github.com/dkbarrett/tilecanoe.git
 cd tilecanoe
+mkdir data
 echo -e "lat,lon\n" > ./data/locations.csv
 htpasswd -c ./frontend/.htpasswd <OWNTRACKS USERNAME>
 docker-compose up -d
