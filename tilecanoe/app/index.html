@@ -5,8 +5,18 @@
   <meta charset='utf-8' />
   <title>Where I've Been</title>
   <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
-  <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.9.1/mapbox-gl.js'></script>
-  <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.9.1/mapbox-gl.css' rel='stylesheet' />
+  
+	<!-- Favicon links -->
+	<link rel="apple-touch-icon" sizes="180x180" href="https://dougbarrett.nz/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="https://dougbarrett.nz/favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://dougbarrett.nz/favicon-32x32.png">
+	<link rel="manifest" href="https://dougbarrett.nz/site.webmanifest">
+	<link rel="mask-icon" href="https://dougbarrett.nz/safari-pinned-tab.svg" color="#5bbad5">
+	<meta name="msapplication-TileColor" content="#da532c">
+	<meta name="theme-color" content="#ffffff">
+  
+  <script src='https://api.mapbox.com/mapbox-gl-js/v1.11.1/mapbox-gl.js'></script>
+  <link href='https://api.mapbox.com/mapbox-gl-js/v1.11.1/mapbox-gl.css' rel='stylesheet' />
   <style>
     body {
       margin: 0;
@@ -29,6 +39,10 @@
       left: 0;
       top: 0;
     }
+    
+    .mapbox-improve-map {
+      display: none;
+    }
   </style>
 </head>
 
@@ -46,7 +60,8 @@
       center: [-90.4329477, 16.5873136],
       minZoom: 0,
       maxZoom: 9,
-      zoom: 2
+      zoom: 2,
+      attributionControl: false
     });
 
 
@@ -77,6 +92,10 @@
         'source': 'locations',
       });
       map.addControl(new mapboxgl.NavigationControl());
+      map.addControl(new mapboxgl.AttributionControl({
+        compact: true,
+        customAttribution: '<a href="https://github.com/dkbarrett/tilecanoe">View source on GitHub</a>'
+      }));
       loadMetadata();
     });
   </script>
