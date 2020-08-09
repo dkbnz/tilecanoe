@@ -8,7 +8,9 @@
     "serveAllFonts": false,
     "serveAllStyles": false,
     "serveStaticMaps": false,
-    "frontPage": "index.html"
+    "frontPage": "index.html",
+    "minRendererPoolSizes": [1],
+    "maxRendererPoolSizes": [2, 1]
   },
   "styles": {
     "heatmap": {

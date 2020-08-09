@@ -1,15 +1,19 @@
-version: "3.8"
+version: "2.4"
 
 services:
 
   frontend:
     container_name: frontend
     build: ./frontend
-    ports:
-      - "80:80"
     networks:
       - backend
-      - proxy
+      - nginx-proxy
+    ports:
+      - "8080:80"
+    environment:
+      VIRTUAL_HOST: map.dougbarrett.nz
+      VIRTUAL_PORT: 8080
+      LETSENCRYPT_HOST: map.dougbarrett.nz
     restart: on-failure
 
   recorder:
@@ -32,5 +36,5 @@ services:
 
 networks:
   backend:
-  proxy:
+  nginx-proxy:
     external: true

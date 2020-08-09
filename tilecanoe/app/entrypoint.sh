@@ -59,5 +59,5 @@ update_tiles () {
 while :
 do
   update_tiles
-  sleep 30 # Wait an hour before checking for new locations.
+  sleep 3600 # Wait an hour before checking for new locations.
 done

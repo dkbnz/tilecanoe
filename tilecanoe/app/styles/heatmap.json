@@ -16,8 +16,8 @@
     "type": "heatmap",
     "paint": {
       "heatmap-opacity": 0.4,
-      "heatmap-radius": 10,
-      "heatmap-weight": 0.3
+      "heatmap-radius": 8,
+      "heatmap-weight": 0.1
     }
   }]
 }

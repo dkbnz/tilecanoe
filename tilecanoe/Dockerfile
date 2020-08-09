@@ -13,5 +13,6 @@ FROM maptiler/tileserver-gl
 
 COPY --from=builder /build/tippecanoe /usr/local/bin/
 COPY /app/ /app/
+COPY ./run.sh /usr/src/app/
 
 ENTRYPOINT ["bash", "/app/entrypoint.sh"]
