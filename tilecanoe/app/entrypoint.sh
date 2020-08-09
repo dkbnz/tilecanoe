@@ -2,6 +2,11 @@
 set -e
 PID=-1
 
+if [ -z ${UPDATE_INTERVAL+x} ]; then
+  UPDATE_INTERVAL=3600
+  echo "Update interval unspecified, using default of ${UPDATE_INTERVAL} seconds";
+fi
+
 # Colour logs before printing to stdout
 log () {
   while read data;
@@ -59,5 +64,5 @@ update_tiles () {
 while :
 do
   update_tiles
-  sleep 3600 # Wait an hour before checking for new locations.
+  sleep ${UPDATE_INTERVAL} # Seconds to wait before checking for new locations.
 done

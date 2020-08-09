@@ -7,13 +7,9 @@ services:
     build: ./frontend
     networks:
       - backend
-      - nginx-proxy
+      - reverse-proxy
     ports:
-      - "8080:80"
-    environment:
-      VIRTUAL_HOST: map.dougbarrett.nz
-      VIRTUAL_PORT: 8080
-      LETSENCRYPT_HOST: map.dougbarrett.nz
+      - "80:80"
     restart: on-failure
 
   recorder:
@@ -36,5 +32,5 @@ services:
 
 networks:
   backend:
-  nginx-proxy:
+  reverse-proxy:
     external: true
